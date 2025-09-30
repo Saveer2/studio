@@ -16,7 +16,7 @@ const Header = () => {
         </Link>
         <nav>
           <Button asChild className="font-bold transition-all duration-300 transform hover:scale-110 hover:skew-x-[-6deg] hover:bg-accent hover:text-accent-foreground shadow-md hover:shadow-lg hover:shadow-accent/50">
-            <Link href="/feedback">Feedback</Link>
+            <Link href="https://docs.google.com/forms/d/e/1FAIpQLSfgwvsazsTKhPRWJqMBT6sThb43og4-wyP54I5hDlzF-84Qpg/viewform?usp=header" target="_blank" rel="noopener noreferrer">Feedback</Link>
           </Button>
         </nav>
       </div>
