@@ -10,6 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Loader2, Send } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const initialState = {
   message: undefined,
@@ -19,10 +20,11 @@ const initialState = {
 
 function SubmitButton() {
   const { pending } = useFormStatus();
+  const { t } = useLanguage();
   return (
     <Button type="submit" disabled={pending} className="w-full font-bold text-lg py-6 transition-all duration-300 transform hover:scale-105 hover:bg-accent hover:text-accent-foreground active:scale-100">
       {pending ? <Loader2 className="mr-2 h-6 w-6 animate-spin" /> : <Send className="mr-2 h-6 w-6" />}
-      Send Feedback
+      {t('feedbackPage.form.submitButton')}
     </Button>
   );
 }
@@ -31,6 +33,7 @@ export default function FeedbackForm() {
   const [state, formAction] = useFormState(handleFeedback, initialState);
   const { toast } = useToast();
   const formRef = useRef<HTMLFormElement>(null);
+  const { t } = useLanguage();
 
   useEffect(() => {
     if (state?.error && !state.errors) {
@@ -56,19 +59,19 @@ export default function FeedbackForm() {
         <CardContent className="p-6 space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <Label htmlFor="name">Your Name</Label>
-              <Input id="name" name="name" placeholder="John Doe" required aria-describedby="name-error" />
+              <Label htmlFor="name">{t('feedbackPage.form.nameLabel')}</Label>
+              <Input id="name" name="name" placeholder={t('feedbackPage.form.namePlaceholder')} required aria-describedby="name-error" />
               {state?.errors?.name && <p id="name-error" className="text-sm text-destructive">{state.errors.name[0]}</p>}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="email">Your Email</Label>
-              <Input id="email" name="email" type="email" placeholder="john.doe@example.com" required aria-describedby="email-error" />
+              <Label htmlFor="email">{t('feedbackPage.form.emailLabel')}</Label>
+              <Input id="email" name="email" type="email" placeholder={t('feedbackPage.form.emailPlaceholder')} required aria-describedby="email-error" />
               {state?.errors?.email && <p id="email-error" className="text-sm text-destructive">{state.errors.email[0]}</p>}
             </div>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="feedback">Feedback</Label>
-            <Textarea id="feedback" name="feedback" placeholder="Tell us what you think..." rows={5} required aria-describedby="feedback-error"/>
+            <Label htmlFor="feedback">{t('feedbackPage.form.feedbackLabel')}</Label>
+            <Textarea id="feedback" name="feedback" placeholder={t('feedbackPage.form.feedbackPlaceholder')} rows={5} required aria-describedby="feedback-error"/>
             {state?.errors?.feedback && <p id="feedback-error" className="text-sm text-destructive">{state.errors.feedback[0]}</p>}
           </div>
         </CardContent>
