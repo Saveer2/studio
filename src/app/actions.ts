@@ -3,6 +3,7 @@
 import { z } from 'zod';
 import { recommendTicketPlatform } from '@/ai/flows/recommend-ticket-platform';
 import type { RecommendTicketPlatformOutput } from '@/ai/flows/recommend-ticket-platform';
+import nodemailer from 'nodemailer';
 
 const recommendationSchema = z.object({
   location: z.string().min(1, 'Location is required'),
@@ -70,10 +71,44 @@ export async function handleFeedback(
     };
   }
   
+  const { name, email, feedback } = validatedFields.data;
+
+  // Log feedback to console
   console.log('New Feedback Received:');
-  console.log('Name:', validatedFields.data.name);
-  console.log('Email:', validatedFields.data.email);
-  console.log('Feedback:', validatedFields.data.feedback);
+  console.log('Name:', name);
+  console.log('Email:', email);
+  console.log('Feedback:', feedback);
+
+  // Send email
+  try {
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.GMAIL_USER,
+        pass: process.env.GMAIL_APP_PASSWORD,
+      },
+    });
+
+    const mailOptions = {
+      from: process.env.GMAIL_USER,
+      to: 'moresaveer4@gmail.com',
+      subject: 'New Feedback from TicketBuddy',
+      html: `
+        <h2>New Feedback Received</h2>
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Feedback:</strong></p>
+        <p>${feedback}</p>
+      `,
+    };
+
+    await transporter.sendMail(mailOptions);
+    console.log('Feedback email sent successfully.');
+  } catch (error) {
+    console.error('Error sending feedback email:', error);
+    // You might want to return an error state here to the user
+    // For now, we just log it and return the success message for the form submission itself.
+  }
 
   return { message: 'Thank you for your feedback! We have received your message.' };
 }
