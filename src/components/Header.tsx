@@ -1,6 +1,12 @@
 import Link from 'next/link';
-import { Ticket } from 'lucide-react';
+import { Ticket, Languages } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 const Header = () => {
   return (
@@ -14,7 +20,20 @@ const Header = () => {
             TicketBuddy
           </h1>
         </Link>
-        <nav>
+        <nav className="flex items-center gap-2">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="icon" className="transition-all duration-300 transform hover:scale-110 hover:shadow-lg">
+                <Languages className="h-5 w-5" />
+                <span className="sr-only">Change language</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem>English</DropdownMenuItem>
+              <DropdownMenuItem>Hindi</DropdownMenuItem>
+              <DropdownMenuItem>Marathi</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
           <Button asChild className="font-bold transition-all duration-300 transform hover:scale-110 hover:skew-x-[-6deg] hover:bg-accent hover:text-accent-foreground shadow-md hover:shadow-lg hover:shadow-accent/50">
             <Link href="https://docs.google.com/forms/d/e/1FAIpQLSfgwvsazsTKhPRWJqMBT6sThb43og4-wyP54I5hDlzF-84Qpg/viewform?usp=header" target="_blank" rel="noopener noreferrer">Feedback</Link>
           </Button>
